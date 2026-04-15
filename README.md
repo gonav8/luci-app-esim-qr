@@ -1,36 +1,26 @@
-# luci-app-esim-qr
+# luci-app-esim-qr (v1.1)
 
-Simple LuCI page to upload eSIM QR code image, decode with `zbar`, and add profile via `lpac`. Designed for OpenWRT 25.12.2 and newer (APK package format).
+Enhanced eSIM Management for OpenWRT 25.12.2 (APK format).
 
-## Features
-- Upload eSIM QR code image directly from LuCI.
-- Automated decoding using `zbarimg`.
-- Profile download using `lpac`.
-- Optimized for 5G travel routers (e.g., Quectel RM520N-EU).
+## New Features
+- **Profile Management**: List all profiles with provider names, ICCID, and status.
+- **One-Click Actions**: Activate, Deactivate, or Delete profiles directly from LuCI.
+- **Modem Monitoring**: Integrated with `luci-app-3ginfo-lite` for real-time modem status.
+- **Data Usage**: Basic data usage monitoring and limit setup.
+- **WAN Integration**: Optimized for modems like Quectel RM520N-EU.
 
 ## Requirements
 - `lpac`
 - `zbar-tools`
 - `libcurl`
+- `vnstat`
+- `luci-app-3ginfo-lite` (forked in your account)
 
-## Installation (OpenWRT 25.12.2+)
-Since OpenWRT 25.12.2 uses the APK package manager, you can install the `.apk` package directly if available, or build it using the OpenWRT SDK.
-
-### Building with OpenWRT SDK
-1. Clone this repo into your SDK `package` directory:
-   ```bash
-   git clone https://github.com/gonav8/luci-app-esim-qr package/luci-app-esim-qr
-   ```
-2. Select the package in `make menuconfig` (LuCI -> 3. Applications -> luci-app-esim-qr).
-3. Build the package:
-   ```bash
-   make package/luci-app-esim-qr/compile
-   ```
-4. Find the `.apk` file in `bin/packages/.../luci/`.
-
-## Configuration
-The script defaults to using `/dev/ttyUSB2` for AT commands. You can modify this in `/usr/lib/luci/luci-app-esim-qr/qr-upload.sh` if your modem uses a different port.
+## Installation
+1. Add both `luci-app-esim-qr` and `luci-app-3ginfo-lite` to your SDK.
+2. Select them in `make menuconfig`.
+3. Build and install the `.apk` files.
 
 ## Credits
 - [lpac](https://github.com/estkme-group/lpac)
-- OpenWRT Community
+- [4IceG/luci-app-3ginfo-lite](https://github.com/4IceG/luci-app-3ginfo-lite)
