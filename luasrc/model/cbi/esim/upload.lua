@@ -1,4 +1,4 @@
-m = Map("esim", "eSIM Profile Manager (QR Upload)")
+m = Map("esim", "eSIM QR Upload")
 
 s = m:section(TypedSection, "general", "Upload eSIM QR Code")
 s.anonymous = true
@@ -12,7 +12,7 @@ function btn.write(self, section)
     local file = luci.http.formvalue("cbid.esim.general.qrfile")
     if file then
         luci.sys.call("/usr/lib/luci/luci-app-esim-qr/qr-upload.sh " .. file)
-        luci.http.redirect(luci.dispatcher.build_url("admin/network/esim"))
+        luci.http.redirect(luci.dispatcher.build_url("admin/network/esim/list"))
     end
 end
 

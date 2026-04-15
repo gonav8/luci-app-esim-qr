@@ -1,0 +1,52 @@
+<%+header%>
+<h2><%:eSIM Profiles%></h2>
+<div class="cbi-map-descr"><%:Manage your eSIM profiles below.%></div>
+
+<table class="table cbi-section-table" id="profile-table">
+    <tr class="cbi-section-table-titles">
+        <th class="cbi-section-table-cell"><%:Provider%></th>
+        <th class="cbi-section-table-cell"><%:ICCID%></th>
+        <th class="cbi-section-table-cell"><%:Status%></th>
+        <th class="cbi-section-table-cell"><%:Action%></th>
+    </tr>
+    <tbody id="profile-body">
+        <tr><td colspan="4">Loading profiles...</td></tr>
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    function loadProfiles() {
+        XHR.get('<%=luci.dispatcher.build_url("admin/network/esim/action")%>', { action: 'list' }, function(x, res) {
+            var body = document.getElementById('profile-body');
+            body.innerHTML = '';
+            if (res && res.payload && res.payload.data) {
+                res.payload.data.forEach(function(p) {
+                    var row = body.insertRow();
+                    row.insertCell(0).innerHTML = p.providerName || 'Unknown';
+                    row.insertCell(1).innerHTML = p.iccid;
+                    row.insertCell(2).innerHTML = p.profileState === 'enabled' ? '<span style="color:green">Active</span>' : 'Inactive';
+                    
+                    var actions = row.insertCell(3);
+                    if (p.profileState === 'enabled') {
+                        actions.innerHTML = '<button class="cbi-button cbi-button-reset" onclick="handleAction(\'disable\', \'' + p.iccid + '\')">Deactivate</button>';
+                    } else {
+                        actions.innerHTML = '<button class="cbi-button cbi-button-apply" onclick="handleAction(\'enable\', \'' + p.iccid + '\')">Activate</button>';
+                    }
+                    actions.innerHTML += ' <button class="cbi-button cbi-button-remove" onclick="handleAction(\'delete\', \'' + p.iccid + '\')">Delete</button>';
+                });
+            } else {
+                body.innerHTML = '<tr><td colspan="4">No profiles found or error loading.</td></tr>';
+            }
+        });
+    }
+
+    function handleAction(action, iccid) {
+        if (action === 'delete' && !confirm('Are you sure you want to delete this profile?')) return;
+        XHR.get('<%=luci.dispatcher.build_url("admin/network/esim/action")%>', { action: action, iccid: iccid }, function(x, res) {
+            loadProfiles();
+        });
+    }
+
+    loadProfiles();
+</script>
+<%+footer%>
