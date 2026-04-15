@@ -5,9 +5,17 @@ Enhanced eSIM Management for OpenWRT 25.12.2 (APK format).
 ## New Features
 - **Profile Management**: List all profiles with provider names, ICCID, and status.
 - **One-Click Actions**: Activate, Deactivate, or Delete profiles directly from LuCI.
+- **QR Code Upload**: Upload eSIM QR images directly from LuCI; the system automatically extracts the LPA code and adds the profile via `lpac`.
 - **Modem Monitoring**: Integrated with `luci-app-3ginfo-lite` for real-time modem status.
 - **Data Usage**: Basic data usage monitoring and limit setup.
 - **WAN Integration**: Optimized for modems like Quectel RM520N-EU.
+
+## UI Preview
+### eSIM Manager
+![eSIM Manager](ui_sketch_manager.png)
+
+### QR Upload
+![QR Upload](ui_sketch_upload.png)
 
 ## Requirements
 - `lpac`
